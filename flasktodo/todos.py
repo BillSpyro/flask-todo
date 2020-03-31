@@ -42,6 +42,23 @@ def index_not_completed():
 
     return render_template("index.html", todos=todos)
 
+@bp.route("/<id>")
+def mark(id):
+    """Marks an item as completed"""
+
+    cur = db.get_db().cursor()
+    cur.execute("""
+     UPDATE todos SET completed = True
+     WHERE id = %s;
+     """,
+        (id,))
+    db.get_db().commit()
+    cur.execute('SELECT * FROM todos')
+    todos = cur.fetchall()
+    cur.close()
+
+    return render_template("index.html", todos=todos)
+
 @bp.route("/create-item", methods=('GET', 'POST'))
 def create():
     """View for create page which allows you to create the list items."""

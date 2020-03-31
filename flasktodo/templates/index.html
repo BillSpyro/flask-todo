@@ -10,7 +10,10 @@
   <ul>
     {% for todo in todos %}
       <li class="{{ "completed" if todo['completed'] }}">
-        {{ todo['description'] }}
+      {{ todo['description'] }}
+      {% if todo['completed'] == False %}
+      <a href="{{ url_for('todos.mark', id=todo['id']) }}"><input type="button" value="Mark"></a>
+      {% endif %}
       </li>
     {% endfor %}
   </ul>
