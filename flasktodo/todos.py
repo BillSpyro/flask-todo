@@ -94,3 +94,21 @@ def create():
 
         return redirect(url_for('todos.index'))
     return render_template('create.html')
+
+@bp.route("/update/<id>", methods=('GET', 'POST'))
+def update(id):
+    """view for the update page which allows you to edit an item"""
+    if request.method =='POST':
+        item = request.form['description']
+        
+        cur = db.get_db().cursor()
+        cur.execute("""
+        UPDATE todos SET description = %s
+        WHERE id = %s;
+        """,
+            (item, id))
+        db.get_db().commit()
+        cur.close()
+
+        return redirect(url_for('todos.index'))
+    return render_template('update.html')

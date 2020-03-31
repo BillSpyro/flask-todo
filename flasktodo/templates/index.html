@@ -15,6 +15,7 @@
       <a href="{{ url_for('todos.mark', id=todo['id']) }}"><input type="button" value="Mark"></a>
       {% endif %}
       <a href="{{ url_for('todos.delete', id=todo['id']) }}"><input type="button" value="Delete"></a>
+      <a href="{{ url_for('todos.update', id=todo['id']) }}"><input type="button" value="Update"></a>
       </li>
     {% endfor %}
   </ul>

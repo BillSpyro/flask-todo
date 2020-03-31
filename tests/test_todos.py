@@ -35,4 +35,31 @@ def test_add_item(client, app):
     response = client.get('/')
     assert b'feedthemax' in response.data
 
+def test_completed_item(client, app):
+    response = client.get('/completed')
+    assert b'do homework' in response.data
+    assert b'get groceries' not in response.data
+    assert b'clean room' not in response.data
 
+def test_not_completed_item(client, app):
+    response = client.get('/not_completed')
+    assert b'do homework' not in response.data
+    assert b'clean room' in response.data
+    assert b'get groceries' in response.data
+
+def test_mark(client, app):
+    response = client.get('/mark/1')
+    response = client.get('/completed')
+    assert b'clean room' in response.data
+
+def test_delete(client, app):
+    response = client.get('/delete/1')
+    assert b'clean room' not in response.data
+
+def test_update(client, app):
+    response = client.post(
+        '/update/2', data={'description': 'feedthenick'}
+    )
+    response = client.get('/')
+    assert b'feedthenick' in response.data
+    assert b'do homework' not in response.data
