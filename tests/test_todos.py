@@ -34,3 +34,5 @@ def test_add_item(client, app):
 
     response = client.get('/')
     assert b'feedthemax' in response.data
+
+
