@@ -19,18 +19,18 @@ def test_add_item(client, app):
     response = client.get('/create-item')
     assert b'<h1>Create a to-do item</h1>' in response.data
     assert b'Enter an item' in response.data
-    
+
 
     response = client.post(
         '/create-item', data={'description': 'feedthemax'}
     )
-    
+
     with app.app_context():
         cur = get_db().cursor()
         cur.execute(
-            "SELECT * FROM todos WHERE description = 'test'"
+            "SELECT * FROM todos WHERE description = 'feedthemax'"
         )
         assert cur.fetchone() is not None
-    
+
     response = client.get('/')
     assert b'feedthemax' in response.data
