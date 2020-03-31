@@ -42,3 +42,23 @@ def test_cli_commands(runner, monkeypatch, function, command, output):
     assert output in result.output
     assert Recorder.called
 
+
+def add_item_test_db(client, app):
+    assert client.get('/create-item')
+    response = client.post(
+        '/create-item', data={'description': 'test'}
+    )
+    assert client.get('/')
+    
+
+    with app.app_context():
+        assert get_db().execute(
+            "SELECT * FROM todos WHERE description = 'test'"
+        ).fetchtone() is not None
+    
+    assert b'test' in response.data
+    
+
+#add item to the test database need to write the query for that 
+#this adds the test to the database but i also need to check 
+#that the variables are correct as well
