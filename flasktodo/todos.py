@@ -16,6 +16,32 @@ def index():
 
     return render_template("index.html", todos=todos)
 
+@bp.route("/completed")
+def index_completed():
+    """View for home page which shows list of completed to-do items."""
+
+    cur = db.get_db().cursor()
+    cur.execute("""
+     SELECT * FROM todos
+     WHERE completed = 'True';""")
+    todos = cur.fetchall()
+    cur.close()
+
+    return render_template("index.html", todos=todos)
+
+@bp.route("/not_completed")
+def index_not_completed():
+    """View for home page which shows list of not completed to-do items."""
+
+    cur = db.get_db().cursor()
+    cur.execute("""
+     SELECT * FROM todos
+     WHERE completed = 'False';""")
+    todos = cur.fetchall()
+    cur.close()
+
+    return render_template("index.html", todos=todos)
+
 @bp.route("/create-item", methods=('GET', 'POST'))
 def create():
     """View for create page which allows you to create the list items."""
