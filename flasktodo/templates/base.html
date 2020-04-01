@@ -9,6 +9,17 @@
     <link rel="stylesheet" href="{{ url_for("static", filename="style.css") }}" type="text/css" />
   </head>
   <body>
+    <nav>
+      <ul>
+        {% if g.users %}
+          <li><span>{{ g.users['email'] }}</span>
+          <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+        {% else %}
+          <li><a href="{{ url_for('auth.register') }}">Register</a>
+          <li><a href="{{ url_for('auth.login') }}">Log In</a>
+        {% endif %}
+      </ul>
+    </nav>
     {% block content %}
     {% endblock %}
   </body>

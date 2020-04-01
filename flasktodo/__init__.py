@@ -46,6 +46,10 @@ def create_app(test_config=None):
     from . import todos
     app.register_blueprint(todos.bp)
 
+    # Register Users
+    # ---------------
+    from . import auth
+    app.register_blueprint(auth.bp)
+
     # Return application object to be used by a WSGI server, like gunicorn
     return app
-

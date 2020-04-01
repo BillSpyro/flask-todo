@@ -2,8 +2,9 @@
 
 {% block content %}
   <h1>A simple to-do application</h1>
-
+  {% if g.users %}
   <a href="{{ url_for('todos.create') }}"><input type="button" value="Add to list"></a></li>
+  {% endif %}
   <a href="{{ url_for('todos.index') }}"><input type="button" value="Show All"></a></li>
   <a href="{{ url_for('todos.index_completed') }}"><input type="button" value="Show Completed"></a></li>
   <a href="{{ url_for('todos.index_not_completed') }}"><input type="button" value="Show Not Completed"></a></li>
@@ -11,11 +12,13 @@
     {% for todo in todos %}
       <li class="{{ "completed" if todo['completed'] }}">
       {{ todo['description'] }}
-      {% if todo['completed'] == False %}
+      {% if todo['completed'] == False and g.users %}
       <a href="{{ url_for('todos.mark', id=todo['id']) }}"><input type="button" value="Mark"></a>
       {% endif %}
+      {% if g.users %}
       <a href="{{ url_for('todos.delete', id=todo['id']) }}"><input type="button" value="Delete"></a>
       <a href="{{ url_for('todos.update', id=todo['id']) }}"><input type="button" value="Update"></a>
+      {% endif %}
       </li>
     {% endfor %}
   </ul>
