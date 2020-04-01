@@ -61,5 +61,7 @@ def test_update(client, app):
         '/update/2', data={'description': 'feedthenick'}
     )
     response = client.get('/')
+
     assert b'feedthenick' in response.data
     assert b'do homework' not in response.data
+
