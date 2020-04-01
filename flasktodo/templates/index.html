@@ -2,16 +2,7 @@
 
 {% block content %}
   <h1>A simple to-do application</h1>
-  <ul>
-    {% if g.user %}
-      <li><span>{{ g.user['email'] }}</span>
-      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
-    {% else %}
-      <li><a href="{{ url_for('auth.register') }}">Register</a>
-      <li><a href="{{ url_for('auth.login') }}">Log In</a>
-    {% endif %}
-  </ul>
-  {% if g.user %}
+  {% if g.users %}
   <a href="{{ url_for('todos.create') }}"><input type="button" value="Add to list"></a></li>
   {% endif %}
   <a href="{{ url_for('todos.index') }}"><input type="button" value="Show All"></a></li>
@@ -21,11 +12,13 @@
     {% for todo in todos %}
       <li class="{{ "completed" if todo['completed'] }}">
       {{ todo['description'] }}
-      {% if todo['completed'] == False %}
+      {% if todo['completed'] == False and g.users %}
       <a href="{{ url_for('todos.mark', id=todo['id']) }}"><input type="button" value="Mark"></a>
       {% endif %}
+      {% if g.users %}
       <a href="{{ url_for('todos.delete', id=todo['id']) }}"><input type="button" value="Delete"></a>
       <a href="{{ url_for('todos.update', id=todo['id']) }}"><input type="button" value="Update"></a>
+      {% endif %}
       </li>
     {% endfor %}
   </ul>

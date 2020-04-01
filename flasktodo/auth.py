@@ -74,16 +74,16 @@ def load_logged_in_users():
     if users_id is None:
         g.users = None
     else:
-        g.users = cur.execute(
+        cur.execute(
             'SELECT * FROM users WHERE id = %s', (users_id,)
         )
-        cur.fetchone()
+        g.users = cur.fetchone()
         cur.close()
 
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return redirect(url_for('todos.index'))
 
 def login_required(view):
     @functools.wraps(view)
