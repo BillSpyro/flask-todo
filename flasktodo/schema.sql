@@ -6,6 +6,7 @@
 
 -- Drop existing tables
 DROP TABLE IF EXISTS todos;
+DROP TABLE IF EXISTS users;
 -- Add query to drop users table here
 
 -- Add query to create users table here
@@ -17,4 +18,10 @@ CREATE TABLE todos (
     completed boolean NOT NULL,
     created_at timestamp with time zone NOT NULL
     -- Add Foreign Key to users table here
+);
+
+CREATE TABLE users (
+  id bigserial PRIMARY KEY,
+  email varchar(100) NOT NULL,
+  password varchar(100) NOT NULL
 );

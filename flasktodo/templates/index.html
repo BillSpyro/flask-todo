@@ -2,8 +2,18 @@
 
 {% block content %}
   <h1>A simple to-do application</h1>
-
+  <ul>
+    {% if g.user %}
+      <li><span>{{ g.user['email'] }}</span>
+      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+    {% else %}
+      <li><a href="{{ url_for('auth.register') }}">Register</a>
+      <li><a href="{{ url_for('auth.login') }}">Log In</a>
+    {% endif %}
+  </ul>
+  {% if g.user %}
   <a href="{{ url_for('todos.create') }}"><input type="button" value="Add to list"></a></li>
+  {% endif %}
   <a href="{{ url_for('todos.index') }}"><input type="button" value="Show All"></a></li>
   <a href="{{ url_for('todos.index_completed') }}"><input type="button" value="Show Completed"></a></li>
   <a href="{{ url_for('todos.index_not_completed') }}"><input type="button" value="Show Not Completed"></a></li>

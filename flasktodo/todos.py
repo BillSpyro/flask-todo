@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, g
 import datetime
 from . import db
 
@@ -100,7 +100,7 @@ def update(id):
     """view for the update page which allows you to edit an item"""
     if request.method =='POST':
         item = request.form['description']
-        
+
         cur = db.get_db().cursor()
         cur.execute("""
         UPDATE todos SET description = %s
