@@ -65,3 +65,18 @@ def test_update(client, app):
     assert b'feedthenick' in response.data
     assert b'do homework' not in response.data
 
+def test_users(client, app):
+    response = client.get('/auth/register')
+    assert b'<h1>Register Your Account</h1>' in response.data
+
+    response = client.post(
+        '/auth/register', data={'email': 'test', 'password': 'password'}
+    )
+       
+    response = client.get('auth/login')
+
+    response = client.post(
+        '/auth/login', data={'email': 'test', 'password': 'password'}
+    )
+    response = client.get('/')
+    assert b'test' in response.data
