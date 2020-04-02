@@ -10,9 +10,10 @@
   <a href="{{ url_for('todos.index_not_completed') }}"><input type="button" value="Show Not Completed"></a></li>
   <ul>
     {% for todo in todos %}
+    {% if g.users['id'] == todo['user_id'] %}
       <li class="{{ "completed" if todo['completed'] }}">
       {{ todo['description'] }}
-      {% if todo['completed'] == False and g.users %}
+      {% if todo['completed'] == False %}
       <a href="{{ url_for('todos.mark', id=todo['id']) }}"><input type="button" value="Mark"></a>
       {% endif %}
       {% if g.users %}
@@ -20,6 +21,7 @@
       <a href="{{ url_for('todos.update', id=todo['id']) }}"><input type="button" value="Update"></a>
       {% endif %}
       </li>
+    {% endif %}
     {% endfor %}
   </ul>
 {% endblock %}

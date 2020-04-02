@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, g, flash
+from flask import Blueprint, render_template, request, redirect, url_for, g, flash, session
 import datetime
 from . import db
 from werkzeug.exceptions import abort
+
 
 from flasktodo.auth import login_required
 
@@ -11,11 +12,16 @@ bp = Blueprint("todos", __name__)
 @bp.route("/")
 def index():
     """View for home page which shows list of to-do items."""
-
+    #session['users_id'] = users['id']
+    #user_id = session['users_id']
     cur = db.get_db().cursor()
-    cur.execute('SELECT * FROM todos')
+    cur.execute("""SELECT todos.user_id, users.id, todos.description, todos.completed FROM todos
+    JOIN users ON todos.user_id = users.id""")
+
     todos = cur.fetchall()
+
     cur.close()
+
 
     return render_template("index.html", todos=todos)
 
@@ -88,10 +94,10 @@ def create():
 
         cur = db.get_db().cursor()
         cur.execute("""
-         INSERT INTO todos (description, completed, created_at)
-         VALUES (%s, %s, %s);
+         INSERT INTO todos (description, completed, created_at, user_id)
+         VALUES (%s, %s, %s, %s);
          """,
-         (item, False, dt))
+         (item, False, dt, g.users['id']))
         db.get_db().commit()
         cur.close()
 
