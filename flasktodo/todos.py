@@ -12,15 +12,14 @@ bp = Blueprint("todos", __name__)
 @bp.route("/")
 def index():
     """View for home page which shows list of to-do items."""
-    session['users_id'] = users['id']
-    user_id = session['users_id']
+    #session['users_id'] = users['id']
+    #user_id = session['users_id']
     cur = db.get_db().cursor()
-    cur.execute("""SELECT todo.user_id, user.id, todo.description FROM todo  
-    JOIN users ON todo.user_id = user.id
-    ORDER BY created DESC""", )
-    
+    cur.execute("""SELECT todos.user_id, users.id, todos.description FROM todos
+    JOIN users ON todos.user_id = users.id""")
+
     todos = cur.fetchall()
-    
+
     cur.close()
 
 
@@ -93,15 +92,12 @@ def create():
         item = request.form['description']
         dt = datetime.datetime.now()
 
-        
-        session['users_id'] = users['id']
-        user_id = session['users_id']
         cur = db.get_db().cursor()
         cur.execute("""
          INSERT INTO todos (description, completed, created_at, user_id)
          VALUES (%s, %s, %s, %s);
          """,
-         (item, False, dt, user_id))
+         (item, False, dt, g.users['id']))
         db.get_db().commit()
         cur.close()
 
