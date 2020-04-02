@@ -6,8 +6,8 @@
   <a href="{{ url_for('todos.create') }}"><input type="button" value="Add to list"></a></li>
   {% endif %}
   <a href="{{ url_for('todos.index') }}"><input type="button" value="Show All"></a></li>
-  <a href="{{ url_for('todos.index_completed') }}"><input type="button" value="Show Completed"></a></li>
-  <a href="{{ url_for('todos.index_not_completed') }}"><input type="button" value="Show Not Completed"></a></li>
+  <a href="{{ url_for('todos.index', completed='yes') }}"><input type="button" value="Show Completed"></a></li>
+  <a href="{{ url_for('todos.index', completed='no') }}"><input type="button" value="Show Not Completed"></a></li>
   <ul>
     {% for todo in todos %}
     {% if g.users['id'] == todo['user_id'] %}

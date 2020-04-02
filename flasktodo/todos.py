@@ -12,42 +12,29 @@ bp = Blueprint("todos", __name__)
 @bp.route("/")
 def index():
     """View for home page which shows list of to-do items."""
-    #session['users_id'] = users['id']
-    #user_id = session['users_id']
-    cur = db.get_db().cursor()
-    cur.execute("""SELECT todos.user_id, users.id, todos.description, todos.completed FROM todos
-    JOIN users ON todos.user_id = users.id""")
+    completed = request.args.get('completed')
 
-    todos = cur.fetchall()
+    if completed == 'yes':
+        cur = db.get_db().cursor()
+        cur.execute("""
+            SELECT todos.user_id, users.id, todos.description, todos.completed FROM todos
+            JOIN users ON todos.user_id = users.id WHERE completed = 'True';""")
+        todos = cur.fetchall()
+        cur.close()
+    elif completed == 'no':
+        cur = db.get_db().cursor()
+        cur.execute("""
+            SELECT todos.user_id, users.id, todos.description, todos.completed FROM todos
+            JOIN users ON todos.user_id = users.id WHERE completed = 'False';""")
+        todos = cur.fetchall()
+        cur.close()
+    else:
+        cur = db.get_db().cursor()
+        cur.execute("""SELECT todos.user_id, users.id, todos.description, todos.completed FROM todos
+        JOIN users ON todos.user_id = users.id""")
+        todos = cur.fetchall()
+        cur.close()
 
-    cur.close()
-
-
-    return render_template("index.html", todos=todos)
-
-@bp.route("/completed")
-def index_completed():
-    """View for home page which shows list of completed to-do items."""
-
-    cur = db.get_db().cursor()
-    cur.execute("""
-     SELECT * FROM todos
-     WHERE completed = 'True';""")
-    todos = cur.fetchall()
-    cur.close()
-
-    return render_template("index.html", todos=todos)
-
-@bp.route("/not_completed")
-def index_not_completed():
-    """View for home page which shows list of not completed to-do items."""
-
-    cur = db.get_db().cursor()
-    cur.execute("""
-     SELECT * FROM todos
-     WHERE completed = 'False';""")
-    todos = cur.fetchall()
-    cur.close()
 
     return render_template("index.html", todos=todos)
 
