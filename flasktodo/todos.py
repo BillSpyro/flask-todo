@@ -15,7 +15,7 @@ def index():
     #session['users_id'] = users['id']
     #user_id = session['users_id']
     cur = db.get_db().cursor()
-    cur.execute("""SELECT todos.user_id, users.id, todos.description FROM todos
+    cur.execute("""SELECT todos.user_id, users.id, todos.description, todos.completed FROM todos
     JOIN users ON todos.user_id = users.id""")
 
     todos = cur.fetchall()
